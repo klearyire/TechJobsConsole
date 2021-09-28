@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System;
 
 namespace TechJobsConsole
 {
@@ -137,6 +138,29 @@ namespace TechJobsConsole
             valueBuilder.Clear();
 
             return rowValues.ToArray();
+        }
+
+        public static List<Dictionary<string, string>> FindByValue(string searchTerm)
+        {
+            LoadData();
+
+            List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
+
+            foreach (Dictionary<string, string> row in AllJobs)
+            {
+                foreach (KeyValuePair<string, string> kvp in row)
+                {
+                    bool isInKey = kvp.Key.Contains(searchTerm);
+                    bool isInValue = kvp.Value.Contains(searchTerm);
+
+                    if (isInKey || isInValue)
+                    {
+                        jobs.Add(row);
+                    }
+                }
+            }
+
+            return jobs;
         }
     }
 }
