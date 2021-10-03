@@ -56,11 +56,9 @@ namespace TechJobsConsole
             {
                 foreach (KeyValuePair<string, string> kvp in row)
                 {
-                    bool isInKey = kvp.Key.Contains(searchTerm);
-                    bool isInValue = kvp.Value.Contains(searchTerm);
-
-                    if (isInKey || isInValue)
+                    if (kvp.Value.ToLower().Contains(searchTerm.ToLower()))
                     {
+                        if (!jobs.Contains(row))
                         jobs.Add(row);
                     }
                 }
@@ -76,17 +74,31 @@ namespace TechJobsConsole
             LoadData();
 
             List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
-
-            foreach (Dictionary<string, string> row in AllJobs)
+            if (column == "all")
             {
-                string aValue = row[column];
-
-                if (aValue.Contains(value))
+                foreach (Dictionary<string, string> row in AllJobs)
                 {
-                    jobs.Add(row);
+                    foreach (KeyValuePair<string, string> kvp in row)
+                    {
+                        if (kvp.Value.ToLower().Contains(value.ToLower()))
+                        {
+                            string aValue = row[column];
+                        }
+                    }
                 }
             }
+            else
+            {
+                foreach (Dictionary<string, string> row in AllJobs)
+                {
+                    string aValue = row[column];
 
+                    if (aValue.ToLower().Contains(value.ToLower()))
+                    {
+                        jobs.Add(row);
+                    }
+                }
+            }
             return jobs;
         }
 
